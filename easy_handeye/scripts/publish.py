@@ -5,7 +5,6 @@ import tf2_ros
 import geometry_msgs.msg
 from easy_handeye.handeye_calibration import HandeyeCalibration
 
-
 rospy.init_node('handeye_calibration_publisher')
 while rospy.get_time() == 0.0:
     pass
@@ -38,6 +37,8 @@ HandeyeCalibration.store_to_parameter_server(calib)
 
 orig = calib.transformation.header.frame_id  # tool or base link
 dest = calib.transformation.child_frame_id  # tracking_base_frame
+rospy.loginfo(f'orig frame: {orig}')
+rospy.loginfo(f'dest frame: {dest}')
 
 broadcaster = tf2_ros.StaticTransformBroadcaster()
 static_transformStamped = geometry_msgs.msg.TransformStamped()

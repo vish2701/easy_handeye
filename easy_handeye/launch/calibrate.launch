@@ -33,12 +33,12 @@
     <arg name="rqt_perspective_file" default="$(find easy_handeye)/launch/rqt_easy_handeye.perspective" doc="the path to the rqt perspective file to be opened" />
     
     <!-- Dummy calibration to have a fully connected tf tree and see all frames -->
-    <group if="$(arg publish_dummy)">
-        <node unless="$(arg eye_on_hand)" name="dummy_handeye" pkg="tf" type="static_transform_publisher"
-            args="1 1 1 0 1.5 0 $(arg robot_base_frame) $(arg tracking_base_frame) 10" />
-        <node if="$(arg eye_on_hand)" name="dummy_handeye" pkg="tf" type="static_transform_publisher"
-            args="0 0 0.05 0 0 0 $(arg robot_effector_frame) $(arg tracking_base_frame) 10" />
-    </group>
+<!--    <group if="$(arg publish_dummy)">-->
+<!--        <node unless="$(arg eye_on_hand)" name="dummy_handeye" pkg="tf" type="static_transform_publisher"-->
+<!--            args="1 1 1 0 1.5 0 $(arg robot_base_frame) $(arg tracking_base_frame) 10" />-->
+<!--        <node if="$(arg eye_on_hand)" name="dummy_handeye" pkg="tf" type="static_transform_publisher"-->
+<!--            args="0 0 0.05 0 0 0 $(arg robot_effector_frame) $(arg tracking_base_frame) 10" />-->
+<!--    </group>-->
 
 
     <!-- Start the robot backend outside the namespace, so that it can connect to a MoveGroup in the global namespace -->

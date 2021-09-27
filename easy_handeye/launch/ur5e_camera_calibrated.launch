@@ -1,0 +1,33 @@
+<launch>
+    <arg name="namespace_prefix" default="ur5e_handeye_calibration"/>
+    <arg name="robot_ip" default="192.168.1.20"/>
+
+    <arg name="marker_size" doc="Size of the ArUco marker used, in meters" default="0.1"/>
+    <arg name="marker_id" doc="The ID of the ArUco marker used" default="582"/>
+    <arg name="move_group_namespace" default="/"  doc="the namespace of move_group for the automatic robot motion with MoveIt!" />
+    <arg name="move_group" default="manipulator"  doc="the name of move_group for the automatic robot motion with MoveIt!" />
+    <arg name="start_rviz" default="true" doc="if true, rviz will be started with the provided config file" />
+
+    <arg name="rviz_config_file" default="$(find easy_handeye)/launch/rviz_easy_handeye.config" doc="the path to the rviz config file to be opened" />
+
+
+    <node name="aruco_tracker" pkg="aruco_ros" type="single">
+        <remap from="/camera_info" to="/camera/color/camera_info" />
+        <remap from="/image" to="/camera/color/image_raw" />
+        <param name="image_is_rectified" value="true"/>
+        <param name="marker_size"        value="$(arg marker_size)"/>
+        <param name="marker_id"          value="$(arg marker_id)"/>
+        <param name="reference_frame"    value="camera_link"/>
+        <param name="camera_frame"       value="camera_color_optical_frame"/>
+        <param name="marker_frame"       value="camera_marker" />
+    </node>
+
+    <node if="$(arg start_rviz)" ns="$(arg move_group_namespace)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
+          args="-d $(arg rviz_config_file)" output="screen" />
+
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/>
+
+    <include file="$(find easy_handeye)/launch/publish.launch">
+        <arg name="eye_on_hand" value="true"/>
+    </include>
+</launch>
